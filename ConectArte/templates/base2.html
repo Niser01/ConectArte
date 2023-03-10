@@ -1,0 +1,86 @@
+{% comment %} <!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title  ></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        
+        <script src="" async defer></script>
+    </body>
+</html> {% endcomment %}
+{% load static %}
+{% load tailwind_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% tailwind_css %}
+
+    <!--Favicon-->
+
+    <!-- AlpineJS -->
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+
+    <!--Boxicons-->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+
+    <!--JQuery-->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+
+    
+    {% block extra_head %}{% endblock extra_head %}
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+
+<body class="bg-gray-100 dark:bg-dark-main" style="background-color: #f3f2ef">
+
+    {% block navbar %}{% endblock navbar %}
+
+    <div class="flex justify-center">
+
+            
+        <div id="div2" class="w-full lg:w-2/3 xl:w-4/5 pt-32 lg:pt-16 px-2 " style="margin-right: 30%; text-align: center;width: 100%; ">
+        {% block content %}{% endblock content %}
+        </div>
+
+        <div class="w-3/5 pt-16 h-full hidden xl:block px-4 fixed top-0 right-0" style="margin-right: 0%; width: 30%;">
+        {% block right_sidebar %}
+        
+        {% endblock right_sidebar %}
+        </div>
+    </div>
+    <!--FOOTER-->
+
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+        
+              var height = $(window).height();
+              height= height - 58;
+              console.log(height)
+        
+              $('#div2').height(height);
+        });
+        
+        </script>
+
+    {% block javascript %}
+    
+    
+    {% endblock javascript %}
+</body>
+</html> 

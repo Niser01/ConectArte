@@ -1,0 +1,303 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+
+
+
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block navbar %}
+<style>
+  #Vacantes{
+    border-bottom: 4px #3c84f4 solid; margin-bottom: 40px; position: relative;
+  }
+</style>
+{% include 'components/navbar.html' %}
+{% endblock navbar %}
+
+
+{% block left_sidebar %}
+{% include 'components/sidebars/leftBar/sidebar.html' %}
+
+{% endblock left_sidebar %}
+
+
+{% block content %}
+
+
+<button data-toggle="modal" data-target="#Modal_Publicar"
+  class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 20" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+    <path d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+  </svg>
+  <span> Publicar vacante</span>
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="Modal_Publicar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 style="text-align: center; margin-left: 38%; font-weight: 600;" class="modal-title" id="exampleModalLabel">
+          Crear publicación</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div style="display: flex; height: 100px;">
+          <div style="width: 100px; height: 100px;">
+            
+            {% for img in user.fotoPerfil.all %}
+              <img style="border-radius: 50%; width: 100px; height: 100px;" src="{{img.imagen.url}}" alt="">
+            {% endfor %}
+          </div>
+          <p style="margin-left: 20px; margin-top: 2.5%; font-weight: 600;">{{user.username}} {{user.lastname}}</p>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group" rows="1">
+            Titulo de la vacante
+            {{form.TituloVacante}}
+          </div>
+          <div class="form-group" rows="6">
+            Elige una categoria para la vacante
+            {{form.CategoriaVacante}}
+            {% comment %} <textarea placeholder="Elige categoria..." class="form-control"
+              id="exampleFormControlTextarea1" rows="6"></textarea> {% endcomment %}
+          </div>
+          <div class="form-group" rows="6">
+            ¿De qué trata el trabajo
+            {{form.DescripcionVacante}}
+          </div>
+          <div class="form-group" rows="6">
+            Remuneración
+            {{form.Pago}}
+          </div>
+
+      </div>
+      <div class="modal-footer">
+        
+        <button type="submit" style="background-color: blue;" class="btn btn-primary btn-lg btn-block">Publicar</button>
+      </div>
+
+
+      </form>
+
+      
+    </div>
+  </div>
+</div>
+
+<!-- Fin Modal -->
+
+{% for vacante in vacantes %}
+
+
+<div  style=" background-color: rgb(246, 240, 240); margin-top: 40px; border-top: 1px #3b82f6 solid; border-left: 1px #3b82f6 solid; border-right: 1px #3b82f6 solid;" class="container">
+  <div style="margin-top: 3%;" class="row">
+    <div style="  margin: 0 auto;" class="col-2">
+      {% for img in vacante.AutorVacante.fotoPerfil.all %}
+      <img style="border-radius: 50%; width: 70px; height: 70px; margin-left: 0px; margin-top: 10px; margin-left: 7px;"
+      src="{{img.imagen.url}}"  alt="art">
+    {% endfor %}
+
+    </div>
+    <div style="width: 80%;" class="col-10">
+      {{vacante.TituloVacante}}
+      <div>
+        <p style="height: 25px; margin-top: 0%; "> Contratador: {{vacante.AutorVacante.username}}</p>
+      </div>
+      <div style="display: flex;">
+        <p style="height: 25px; margin-top: 0%;">Pago ofrecido: ${{vacante.Pago}}</p>
+        <p style="height: 25px; margin-left: 17%;">
+          <svg style="color: #3b82f6;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+          </svg>          
+          Bogotá
+        </p>
+        <p style="height: 25px; margin-left: 17%;">
+          <svg style="color: #3b82f6;;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>          
+          {{vacante.FechaPublicacionVacante}}
+        </p>
+      </div>
+    </div>
+    <div class="popup-info2">
+      <h1>{{vacante.TituloVacante}}</h1>
+      <p>{{vacante.CategoriaVacante}}</p>
+      <p>{{vacante.DescripcionVacante}}</p>
+      <p>{{vacante.Pago}}</p>
+      <p>{{vacante.AutorVacante.username}}</p>
+      <p>{{vacante.FechaPublicacionVacante}}</p>
+    </div>
+
+    <div style="margin-left: 80%; margin-top: 15px;">
+      <button data-toggle="modal" data-target=".bd-example-modal-lg" type="button" style="margin-top: 20px; margin-right: 10px;" class="btn btn-outline-info btn-block">Ver oferta</button>
+    </div>
+    <!-- modal VACANTES -->
+<div  class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div style="height: 500px;" class="modal-content">
+
+      <div class="modal-header">
+        <h1 style="text-align: center; margin-left: 38%; font-weight: 600;" class="modal-title" id="exampleModalLabel">
+         {{vacante.TituloVacante}}Jp</h1>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div style="  margin: 0 auto;" class="col-2">
+              <img style="border-radius: 50%; width: 100px; height: 100px; margin-left: 0px; margin-top: 10px; margin-left: 7px;"
+                src="{% static 'images/sin-foto.png' %}" alt="art">
+              {% comment %} <p style="margin-top: 60px;">{{perfil.fotoPerfil}}</p> {% endcomment %}
+            </div>
+            <div style="width: 80%;" class="col-10">
+              <div>
+                <p style="height: 25px; margin-top: 0%; "> Responsable: {{vacante.AutorVacante.username}}</p>
+              </div>
+              <div style="display: flex;">
+                <p style="height: 25px; margin-top: 0%;">Pago ofrecido: ${{vacante.Pago}}</p>
+              </div>
+            </div>
+            <div class="col-6">
+              <p style="height: 25px; margin-left: 17%;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>          
+                Bogotá
+              </p>
+            </div>
+            <div class="col-6">
+              <p style="height: 25px; margin-left: 17%;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>           
+                Publicado {{vacante.FechaPublicacionVacante}}
+              </p> 
+            </div>
+            <div style="margin-top: 50px;" class="col-12">
+              <p style="height: 25px; width: 100%; ">
+                {{vacante.DescripcionVacante}}
+              </p> 
+            </div> 
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" style="background-color: blue;" class="btn btn-primary btn-lg btn-block">Contactarme</button>
+      </div>
+      ...
+    </div>
+  </div>
+</div>
+<!-- modal vacantes --> 
+  </div>
+</div>
+
+{% comment %} <script type="text/javascript">
+  const popupinfo = document.querySelector(".popup-info2")
+  console.log(popupinfo[1]);
+  popupbtns.forEach(btn => btn.addEventListener('click', () => {
+    const popupinfo = btn.parentNode.childNodes[11];
+        popupContent.querySelector(".popup-TituloVacante").src = popupinfo.children[0].textContent //project image
+        popup.querySelector(".popup-CategoriaVacante").textContent = popupinfo.children[1].textContent; // project title
+        popupContent.querySelector(".popup-DescripcionVacante").textContent  =  popupinfo.children[2].textContent; // project description
+        popupContent.querySelector(".popup-Pago").textContent =  popupinfo.children[3].textContent; //project link text
+        popupContent.querySelector(".popup-Autor").href = popupinfo.children[4].textContent;
+        popupContent.querySelector(".popup-Fecha").href = popupinfo.children[5].textContent;
+        
+        wrapper.style.display = "block";
+        popup.style.display = "block";
+    }));
+</script> {% endcomment %}
+
+{% endfor %}
+
+<div>
+  <hr>
+  <p style="text-align: center;"> No hay mas ofertas por el momento</p>
+</div>
+
+
+
+{% endblock content %}
+
+
+{% block right_sidebar %}
+
+<div id="Category_search">
+
+    
+
+  <form>
+    
+    <label>Buscar por tipo de vacante:</label> 
+    <div class="form-group">
+      <div class="form-check"><input class="form-check-input" type="checkbox" id="cantante_cb" name = "cantante_cb"> Cantantes <br></div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" id="musico_cb" name = "musico_cb"> Musicos <br></div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" id="animador_cb" name = "animador_cb"> Animadores <br></div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" id="pintor_cb" name = "pintor_cb"> Pintor <br></div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" id="artesano_cb" name = "artesano_cb"> Artesano <br></div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" id="fotografo_cb" name = "fotografo_cb"> Fotografo </div>
+      <div class="form-check"><input class="form-check-input" type="checkbox" id="escritor_cb" name = "escritor_cb"> Escritores <br></div>
+    </div>
+
+  
+    <label>Buscar por remuneración:</label> 
+
+  
+    <div class="form-group">
+      <input type="number" min=0 name = "filtro_maximo" placeholder = "Máximo" class = "filtro_n2"> 
+      <br>
+      <br>
+      <input type="number" min=0 name = "filtro_minimo" placeholder = "Mínimo" class = "filtro_n2">
+    </div>
+
+    <form action="form-group">
+      <button type="submit" class="btn btn-primary" style="text-align:center; background-color: blue; margin-left:30px;">Buscar</button>
+    </form>
+    
+  </form>
+
+
+
+</div>
+
+
+{% endblock right_sidebar %}
+
+
+
+{% block footer %}
+{% endblock footer %}
+
+
+{% block javascript %}
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+{% endblock javascript %}

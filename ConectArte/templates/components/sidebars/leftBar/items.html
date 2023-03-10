@@ -1,0 +1,23 @@
+
+{% load static %}
+<ul class="p-4">
+    <li>
+        {% comment %} {% url 'users:profile user.username'%} {% endcomment %}
+        <a href="{% url 'users:perfil' user.username %}" class="flex items-center space-x-2 p-2 hover:bg-gray-200 rounded-lg transition-all dark:text-dark-txt dark:hover:bg-dark-third">
+            {% comment %} <img src="{{user.Perfil.FotoPerfil.url}}" alt="Profile picture" class="w-10 h-10 rounded-full"> {% endcomment %}
+            <i class='bx bx-user' ></i>
+            <span class="font-semibold">{{user.username}}</span>
+        </a>
+    </li>
+    <li>
+        <!--Se hizo conexión a la página de followers desde el feed principal-->
+        <a href="{% url 'users:followers' %}" class="flex items-center space-x-2 p-2 hover:bg-gray-200 rounded-lg transition-all dark:text-dark-txt dark:hover:bg-dark-third">
+            {% comment %} <img src="./images/page.png" alt="Profile picture" class="w-10 h-10 rounded-full"> {% endcomment %}
+            <i class='bx bx-user-plus'></i>
+            <span class="font-semibold">Mi red</span>
+        </a>
+    </li>
+    
+    
+    <li class="border-b border-gray-200 dark:border-dark-third mt-6"></li>
+</ul>
